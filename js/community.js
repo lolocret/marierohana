@@ -224,9 +224,8 @@
   function contestEntries() {
     const votes = App.state.get('votes');
     const posted = App.state.get('posted');
-    const mine = Object.assign(me(), { id: 'me', online: true, votes: 0 });
-    if (posted) Object.assign(mine, posted, { id: 'me', online: true, votes: App.state.get('myVotes') });
-    const list = [mine].concat(PLAYERS.slice(0, LOOKBOOK - 1).map(function (p) { return Object.assign({}, p); }));
+    const mine = posted ? [Object.assign({}, posted, { id: 'me', online: true, votes: App.state.get('myVotes') })] : [];
+    const list = mine.concat(PLAYERS.slice(0, LOOKBOOK - mine.length).map(function (p) { return Object.assign({}, p); }));
     list.forEach(function (e) { e.shown = e.votes + (votes[e.id] ? 1 : 0); });
     return list.sort(function (a, b) { return b.shown - a.shown; });
   }
@@ -248,7 +247,8 @@
   // ---- the player sheet and the card to send
   function sheetFor(state, body, setTitle) {
     if (state.kind === 'player') {
-      const p = state.id === 'me' ? Object.assign(me(), { online: true }) : PLAYERS.find(function (x) { return x.id === state.id; });
+      const posted = App.state.get('posted');
+      const p = state.id === 'me' ? (posted && Object.assign({}, posted, { id: 'me', online: true })) : PLAYERS.find(function (x) { return x.id === state.id; });
       if (!p) return false;
       setTitle(p.handle + ' · ' + p.city);
       const total = piecesOf(p.outfit).reduce(function (sum, x) { return sum + (x.price || 0); }, 0);
@@ -515,8 +515,7 @@
     titleTaps = titleTaps.filter(function (t) { return now - t < 900; }).concat([now]);
     if (titleTaps.length >= 3) {
       titleTaps = [];
-      stopClimb();
-      if (!App.state.get('posted')) actions['post-fit']();
+      if (!App.state.get('posted')) return;
       stopClimb();
       App.state.set('screen', 'winner');
     }
