@@ -696,14 +696,18 @@
   outline-offset: 3px;
 }
 
-/* the winner: everything on one screen, no scroll */
+/* Keep every action reachable when the phone's browser bars reduce the height. */
 .winner .screen-body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100%;
+  min-height: 0;
   padding-bottom: calc(var(--tabbar-height) + var(--space-2));
-  overflow: hidden;
+  overflow-y: auto;
+}
+
+.winner .screen-body > * {
+  flex-shrink: 0;
 }
 
 .winner .screen-body > * + * {
@@ -720,12 +724,17 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  min-height: 0;
-  flex: 1;
+  gap: var(--space-2);
+  flex: none;
+}
+
+.winner [data-winner-body] > * {
+  flex-shrink: 0;
 }
 
 .winner .win-card {
   height: 40cqh;
+  max-width: 100%;
   max-height: none;
   flex: none;
 }
@@ -737,7 +746,11 @@
 
 .winner .button {
   min-height: 3rem;
-  margin-top: var(--space-2);
+  margin-top: 0;
+}
+
+.winner .button + .button {
+  margin-top: 0;
 }
 
 .winner .text-button {

@@ -121,7 +121,8 @@
 
   function backdropOf(outfit) {
     const c = card(outfit.backdrop);
-    return c ? c.img : 'assets/runway/stonehaven-2.jpg';
+    // The special card already contains an avatar: do not put a second one over it.
+    return c && c.group !== 'special' ? c.img : 'assets/runway/stonehaven-2.jpg';
   }
 
   // ---- live feed
