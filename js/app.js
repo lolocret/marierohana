@@ -322,6 +322,13 @@
     App.render.reveal();
   }
 
+  function clearUnownedBackdrop() {
+    const outfit = App.state.get('outfit');
+    if (outfit.backdrop && App.state.get('inventory').indexOf(outfit.backdrop) === -1) {
+      App.state.set('outfit', Object.assign({}, outfit, { backdrop: '' }));
+    }
+  }
+
   // EDIT HERE: which part of the page to redraw when a piece of state changes.
   const redraw = {
     screen() {
@@ -343,6 +350,7 @@
       App.render.drop();
     },
     outfit() {
+      clearUnownedBackdrop();
       App.render.fit();
       App.render.sizes();
       if (App.state.get('screen') === 'lobby') App.community.drawTimer();
@@ -379,6 +387,7 @@
       App.render.drop();
     },
     inventory() {
+      clearUnownedBackdrop();
       redrawInventory();
       App.community.drawGoal();
     },
@@ -404,6 +413,7 @@
 
   function start() {
     App.shared.keep(['bag', 'inventory', 'collectionCard', 'outfit', 'history', 'player', 'tour', 'zipped', 'coached', 'dupes']);
+    clearUnownedBackdrop();
 
     document.addEventListener('click', runAction);
     document.addEventListener('click', coachTap);
