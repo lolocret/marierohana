@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>RM$ Supply Drop</title>
+    <link rel="icon" href="assets/logo.png" />
+    <!-- Added to the home screen of a phone, the app opens full screen: no address bar, no browser toolbar -->
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="assets/icon-180.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="RM$" />
+    <meta name="theme-color" content="#ffffff" />
+
+    <!--
+      Every path in this project is relative: "css/app.css", never "/css/app.css".
+      A path that starts with "/" breaks as soon as the folder is uploaded.
+    -->
+    <link rel="preload" href="assets/fonts/ReenieBeanie.ttf" as="font" type="font/ttf" crossorigin />
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/frame.css" />
+    <link rel="stylesheet" href="css/app.css" />
+    <link rel="stylesheet" href="css/shell.css" />
+    <link rel="stylesheet" href="css/community.css" />
+  </head>
+  <body>
+    <!-- Everything the visitor sees goes inside .phone -->
+    <div class="phone">
+      <!-- Header, like marierohana.com: the RM$ mark crossed by thin lines, then the menu -->
+      <header class="site-header">
+        <button class="bar-button" type="button" data-action="open-sheet" data-sheet="menu" aria-haspopup="dialog">MENU</button>
+        <button class="logo-button" type="button" data-action="enter-site" aria-label="RM$ ROHAN MIRZA: home"><img src="assets/logo.png" alt="" width="2200" height="220" /></button>
+        <button class="bar-button bar-bag" type="button" data-action="go-to" data-to="bag">BAG (<span data-show="bag-count">0</span>)</button>
+      </header>
+
+      <main class="stage">
+        <!-- SCREEN: home. The booster of the day first, then the shop. -->
+        <section class="screen home" data-screen="home" aria-labelledby="home-title" hidden>
+          <div class="screen-body">
+            <div class="booster-card" data-drop-banner>
+              <p class="eyebrow">DAILY DROP</p>
+              <p class="booster-status" data-show="drop-label"></p>
+              <button class="button button-primary" type="button" data-action="open-unzip" data-show="open-label">OPEN DROP</button>
+            </div>
+            <div class="goal">
+              <p data-goal-text></p>
+              <div class="goal-bar"><i data-goal-bar></i></div>
+            </div>
+            <h1 id="home-title" class="section-title" tabindex="-1">SHOP</h1>
+            <ul class="shop-grid" data-shop></ul>
+          </div>
+        </section>
+        <!-- /SCREEN: home -->
+
+        <!-- SCREEN: welcome. After the zip: a white screen, video-game style, written by hand. -->
+        <section class="screen intro welcome" data-screen="welcome" aria-labelledby="welcome-title" hidden>
+          <h1 id="welcome-title" class="hand" tabindex="-1" data-write="welcome to the marierohana experience"></h1>
+          <button class="tap-screen" type="button" data-action="intro-next" aria-label="Continue"><span>TAP TO CONTINUE</span></button>
+        </section>
+        <!-- /SCREEN: welcome -->
+
+        <!-- SCREEN: spawn. Choose an avatar. -->
+        <section class="screen intro spawn" data-screen="spawn" aria-labelledby="spawn-title" hidden>
+          <h1 id="spawn-title" class="hand" tabindex="-1" data-write="u just spawned"></h1>
+          <p class="intro-caps">CHOOSE UR AVATAR</p>
+          <div class="avatar-pick">
+            <button class="avatar-choice" type="button" data-action="pick-avatar" data-avatar="m" aria-pressed="false" aria-label="Choose avatar M">
+              <img data-avatar-img="m" alt="" /><span>M</span>
+            </button>
+            <button class="avatar-choice" type="button" data-action="pick-avatar" data-avatar="f" aria-pressed="false" aria-label="Choose avatar F">
+              <img data-avatar-img="f" alt="" /><span>F</span>
+            </button>
+          </div>
+        </section>
+        <!-- /SCREEN: spawn -->
+
+        <!-- SCREEN: name. -->
+        <section class="screen intro name" data-screen="name" aria-labelledby="name-title" hidden>
+          <form class="name-form" data-name-form>
+            <h1 id="name-title" class="hand" tabindex="-1" data-write="fill ur name:"></h1>
+            <label class="visually-hidden" for="player-name">Your name</label>
+            <input id="player-name" class="name-input" type="text" maxlength="14" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="RM_PLAYER" />
+            <button class="button button-primary name-ok" type="submit">OK</button>
+          </form>
+          <img class="name-avatar" data-avatar-img="current" alt="" />
+        </section>
+        <!-- /SCREEN: name -->
+
+        <!-- SCREEN: size. The whole outfit: one size per piece, then ADD TO BASKET. -->
+        <section class="screen intro size" data-screen="size" aria-labelledby="size-title" hidden>
+          <div class="screen-body">
+            <button class="text-button size-back" type="button" data-action="go-to" data-to="tryon">&larr; BACK TO THE FITTING ROOM</button>
+            <h1 id="size-title" class="hand" tabindex="-1" data-write="choose ur size:"></h1>
+            <ul class="size-list" data-size-list></ul>
+            <p class="total"><span>TOTAL</span> <em data-show="outfit-total">0 CHF</em></p>
+            <button class="button button-primary button-large" type="button" data-action="outfit-add" data-outfit-add>ADD TO BASKET</button>
+          </div>
+        </section>
+        <!-- /SCREEN: size -->
+
+        <!-- SCREEN: packs. The 3 packs of the day, in a carousel. Pull the zip of the pack to open it. -->
+        <section class="screen packs" data-screen="packs" aria-labelledby="packs-title" hidden>
+          <header class="packs-head">
+            <h1 id="packs-title" class="hand" tabindex="-1" data-write="unzip ur drop to start ur collection"></h1>
+          </header>
+          <div class="carousel" data-carousel>
+            <div class="rays" data-rays aria-hidden="true"></div>
+            <div class="ring" data-ring></div>
+            <div class="floor" aria-hidden="true"></div>
+          </div>
+          <p class="packs-hint" role="status" data-show="packs-hint"></p>
+        </section>
+        <!-- /SCREEN: packs -->
+
+        <!-- SCREEN: reveal. The pack held ONE card: you have it, directly. -->
+        <section class="screen reveal" data-screen="reveal" aria-labelledby="reveal-title" hidden>
+          <h1 id="reveal-title" class="hand" tabindex="-1" data-write="try moving the card"></h1>
+          <div class="reveal-holder" data-reveal></div>
+          <p class="hint" role="status" data-show="reveal-note"></p>
+          <p class="reveal-progress" data-show="reveal-progress"></p>
+          <button class="text-button reveal-share" type="button" data-action="share-card">SHARE</button>
+          <button class="button button-primary button-large reveal-next" type="button" data-action="continue">ADD TO COLLECTION</button>
+        </section>
+        <!-- /SCREEN: reveal -->
+
+        <!-- SCREEN: bag. Styled like the cart page of the site. -->
+        <section class="screen bag" data-screen="bag" aria-labelledby="bag-title" hidden>
+          <div class="screen-body">
+            <h1 id="bag-title" tabindex="-1">BAG</h1>
+            <div class="bag-list" data-bag-list></div>
+            <button class="text-button" type="button" data-action="go-to" data-to="home">CONTINUE SHOPPING</button>
+            <p class="reward-line" data-show="bag-reward"></p>
+            <p class="total"><span>TOTAL</span> <em data-show="bag-total">0 CHF</em></p>
+
+          </div>
+          <footer class="screen-footer">
+            <button class="button button-primary button-large" type="button" data-action="checkout" disabled>
+              <span data-show="checkout-label">CHECKOUT</span>
+            </button>
+            
+          </footer>
+        </section>
+        <!-- /SCREEN: bag -->
+
+        <!-- SCREEN: lobby. Who is online: your avatar and 7 others in the Stonehaven pool. Tap a player. -->
+        <section class="screen lobby" data-screen="lobby" aria-labelledby="lobby-title" hidden>
+          
+          <header class="lobby-head" data-lobby-title>
+            <h1 id="lobby-title" class="visually-hidden" tabindex="-1">Community lobby</h1>
+            <p class="online"><i class="dot-online"></i><span><b data-online>47</b> PLAYERS ONLINE</span></p>
+            <p class="online lobby-timer"><span data-bestfit-head>BEST FIT OTD</span></p>
+          </header>
+          <div class="lobby-scroll"><ul class="look-grid" data-lobby-grid></ul></div>
+        </section>
+        <!-- /SCREEN: lobby -->
+
+        <!-- SCREEN: winner. Ur fit is on the blog (the end of the contest, shown for the demo video). -->
+        <section class="screen winner" data-screen="winner" aria-labelledby="winner-title" hidden>
+          <div class="screen-body">
+            <h1 id="winner-title" class="hand big" tabindex="-1" data-write="best fit otd"></h1>
+            <div data-winner-body></div>
+            <button class="text-button" type="button" data-action="go-to" data-to="lobby">BACK TO THE LOBBY</button>
+          </div>
+        </section>
+        <!-- /SCREEN: winner -->
+
+        <!-- SCREEN: tryon. The fitting room: the whole catalogue, tried on your avatar. One piece per place;
+             what you do not own yet can be bought as a whole outfit (see the size screen). -->
+        <section class="screen tryon" data-screen="tryon" aria-labelledby="tryon-title" hidden>
+          <div class="fit-main">
+            <div class="fit-stage" data-fit-stage>
+              <p class="loading3d" data-loading3d>LOADING 3D</p>
+              <p class="drag-hint" data-drag-hint>DRAG THE HEAD: HOOD &middot; TAP THE HEAD: CAP<br />DRAG THE CHEST: ZIP</p>
+              <canvas class="avatar3d" data-avatar3d role="img" aria-label="Your avatar in 3D, wearing the outfit. Drag to turn it."></canvas>
+              <div class="fit-figure" data-fit-figure>
+                <img data-avatar-img="current" alt="Your avatar" />
+                <img class="fit-layer" data-fit-layer="bottom" alt="" hidden />
+                <img class="fit-layer" data-fit-layer="tee" alt="" hidden />
+                <img class="fit-layer" data-fit-layer="jacket" alt="" hidden />
+                <img class="fit-layer" data-fit-layer="belt" alt="" hidden />
+              </div>
+            </div>
+            <h1 id="tryon-title" class="hand fit-title" tabindex="-1" data-write=""></h1>
+            <button class="text-button post-fit" type="button" data-action="post-fit">POST UR FIT</button>
+          </div>
+          <div class="outfit-bar" data-outfit-bar hidden>
+            <p data-show="outfit-summary"></p>
+            <button class="button button-primary" type="button" data-action="outfit-sizes" data-show="outfit-cta">CHOOSE SIZES</button>
+          </div>
+          <div class="chips fit-tabs" data-fit-tabs role="tablist" aria-label="Pieces"></div>
+          <div class="fit-picker" data-fit-picker role="group" aria-label="Pieces"></div>
+        </section>
+        <!-- /SCREEN: tryon -->
+
+        <!-- SCREEN: collection. Like the cards screen of a card game: a grid, a tab per category, a card in big on tap. -->
+        <section class="screen collection" data-screen="collection" aria-labelledby="collection-title" hidden>
+          <header class="col-head">
+            <div class="col-title">
+              <h1 id="collection-title" tabindex="-1">COLLECTION</h1>
+              <p class="col-count"><b data-show="collection-owned">0</b> / <span data-show="collection-total">27</span></p>
+            </div>
+            <div class="album-bar"><i data-collection-bar></i></div>
+            <div class="chips" data-chips role="tablist" aria-label="Categories"></div>
+          </header>
+          <div class="screen-body" data-collection-body>
+            <div class="reward-card" data-collection-reward></div>
+            <ul class="card-grid" data-card-grid></ul>
+          </div>
+        </section>
+        <!-- /SCREEN: collection -->
+
+
+      </main>
+
+      <nav class="tabbar" data-tabbar aria-label="Sections">
+        <div class="tabbar-bg" data-tabbar-bg aria-hidden="true"></div>
+        
+        <button class="tab" type="button" data-action="go-to" data-to="home" data-tab="home"><span class="tab-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg></span><span>SHOP</span></button>
+        <button class="tab" type="button" data-action="go-to" data-to="collection" data-tab="collection"><span class="tab-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="6" width="11" height="15" rx="2"/><path d="M8 3.5h8.5A2 2 0 0 1 18.5 5.5V16"/><path d="M19.5 8.5l1.5 8.5"/></svg></span><span>COLLECTION</span></button>
+        <button class="tab" type="button" data-action="open-boosters" data-tab="packs"><span class="tab-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3l2 1.5L10 3l2 1.5L14 3l2 1.5L18 3v18l-2-1.5L14 21l-2-1.5L10 21l-2-1.5L6 21z"/><path d="M9 10h6M9 14h6"/></svg></span><span>DROP</span></button>
+        <button class="tab" type="button" data-action="go-to" data-to="lobby" data-tab="lobby"><span class="tab-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9.5" r="2.4"/><path d="M3.5 20c0-3.6 2.4-6 5.5-6s5.5 2.4 5.5 6"/><path d="M15 14.6c3 0 5.5 1.8 5.5 5.4"/></svg></span><span>LOBBY</span></button>
+        <button class="tab" type="button" data-action="go-to" data-to="tryon" data-tab="tryon"><span class="tab-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 21c0-4.5 3-7 7-7s7 2.5 7 7"/></svg></span><span>AVATAR</span></button>
+      </nav>
+
+      <!-- The guide: a frame around a part of the screen, and a bubble that says what it is. -->
+      <div class="coach" data-coach hidden>
+        <div class="coach-hole" data-coach-hole></div>
+        <p class="coach-bubble" data-coach-bubble role="status"></p>
+      </div>
+
+      <!-- The sheet: the menu, a product, a card in big. It slides up from the bottom. -->
+      <div class="sheet" data-sheet-root hidden>
+        <button class="sheet-scrim" type="button" data-action="close-sheet" aria-label="Close"></button>
+        <div class="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+          <header class="sheet-head">
+            <h2 id="sheet-title" class="sheet-title" tabindex="-1" data-show="sheet-title"></h2>
+            <button class="bar-button" type="button" data-action="close-sheet">CLOSE</button>
+          </header>
+          <div class="sheet-body" data-sheet-body></div>
+        </div>
+      </div>
+
+      <!-- The curtain: the BIGZIP hoodie covers the whole phone. Unzip it to open the site (gate),
+           or to open today's supply drop. -->
+      <div class="curtain" data-curtain hidden>
+        <div class="pack" data-pack role="img" aria-label="BIG ZIPPER HOODIE, closed">
+          <!-- the hoodie: two halves of fabric, cut in a V along the zip -->
+          <div class="fabric fabric-left" data-fabric-left><img data-fabric-img src="assets/zip/fabric-blackblack.jpg" alt="" /></div>
+          <div class="fabric fabric-right" data-fabric-right><img data-fabric-img src="assets/zip/fabric-blackblack.jpg" alt="" /></div>
+          <i class="teeth teeth-left" data-teeth-left></i>
+          <i class="teeth teeth-right" data-teeth-right></i>
+          <button class="zip-pull" type="button" data-zip-pull aria-label="Pull the zip down">
+            <img data-pull-img src="assets/zip/pull-blackblack.png" alt="" />
+          </button>
+        </div>
+
+      </div>
+
+      <div class="hud" data-hud hidden>
+        <div class="unzip-bottom">
+          <div class="unzip-heading">
+            <h1 id="unzip-title" class="visually-hidden" tabindex="-1">TODAY'S DROP</h1>
+            <p class="status" role="status" data-show="unzip-status"></p>
+          </div>
+          <div class="unzip-start" data-gate-start>
+            <button class="button button-primary button-large" type="button" data-action="open-with-hand">OPEN WITH YOUR HAND</button>
+            <button class="text-button" type="button" data-action="simulate-hand" hidden>DEMO: SIMULATE THE HAND WITH THE MOUSE</button>
+          </div>
+          <button class="text-button" type="button" data-action="use-finger" hidden>USE YOUR FINGER</button>
+        </div>
+      </div>
+
+      <video class="camera-video" data-camera-video playsinline muted aria-hidden="true"></video>
+      <span class="hand-cursor" data-hand-cursor hidden></span>
+      <p class="hand-debug" data-hand-debug hidden></p>
+      <p class="toast" role="status" data-show="toast"></p>
+      <div class="flash" data-flash></div>
+    </div>
+
+    <!-- Hand tracking (ml5.js handPose). Without it the zip can still be pulled with a finger. -->
+    <script src="https://unpkg.com/ml5@1.2.1/dist/ml5.min.js"></script>
+
+<!-- The order matters: each file uses the ones above it. app.js is always last. -->
+    <script src="js/frame.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/state.js"></script>
+    <script src="js/shared.js"></script>
+    <script src="js/feedback.js"></script>
+    <script src="js/clock.js"></script>
+    <script src="js/render.js"></script>
+    <script src="js/profile.js"></script>
+    <script src="js/tilt.js"></script>
+    <script src="js/cards.js"></script>
+    <script src="js/booster.js"></script>
+    <script src="js/packs.js"></script>
+    <script src="https://unpkg.com/three@0.147.0/build/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.147.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="js/avatar3d.js"></script>
+    <script src="js/community.js"></script>
+    <script src="js/hand.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>

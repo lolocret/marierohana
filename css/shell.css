@@ -1,0 +1,1742 @@
+/* shell.css: the app shell, like a mobile game: a slim top bar, a tab bar in the thumb zone, sheets that
+   slide up, a card grid. Black, white and grey: colour only comes from the products. */
+
+/* -- top bar: MENU, the mark, BAG -- */
+.site-header {
+  display: grid;
+  grid-template-columns: 1fr minmax(0, 9rem) 1fr;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: calc(var(--bar-height) + var(--safe-top));
+  padding: var(--safe-top) var(--gutter-right) 0 var(--gutter-left);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.site-logo {
+  display: none;
+}
+
+.logo-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--tap-target);
+}
+
+.logo-button img {
+  width: 100%;
+  height: auto;
+}
+
+.bar-button {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-target);
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: var(--text-small);
+  letter-spacing: 0.1em;
+  color: var(--color-ink);
+}
+
+.bar-bag {
+  justify-self: end;
+}
+
+/* -- tab bar: a white bar with a round dip under the active tab, where a black bubble sits (like a phone dock) -- */
+@property --x {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 50%;
+}
+
+.tabbar {
+  --x: 50%;
+  position: relative;
+  flex: none;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  padding: 0 var(--gutter-right) var(--safe-bottom) var(--gutter-left);
+  background: transparent;
+}
+
+.tabbar[hidden] {
+  display: none;
+}
+
+/* the bar itself: white, thin line on top. The active tab rises out of it in a black bubble ringed in white. */
+.tabbar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-top: 1px solid var(--color-ink);
+  background: var(--color-paper);
+}
+
+.tab {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  min-height: var(--tabbar-height);
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: min(0.625rem, 3cqw);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  color: var(--color-ink-soft);
+}
+
+.tab-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 1.5rem;
+  border-radius: 999px;
+}
+
+.tab-icon svg {
+  display: block;
+}
+
+/* the active tab: its icon rises into a black round bubble, its label stays under it */
+.tab[aria-current='page'] {
+  color: var(--color-ink);
+}
+
+.tab[aria-current='page'] .tab-icon {
+  width: 3.25rem;
+  height: 3.25rem;
+  margin-top: -1.5rem;
+  border-radius: 50%;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  box-shadow: 0 0 0 0.45rem var(--color-paper), 0 -0.1rem 0.9rem 0.45rem rgb(0 0 0 / 0.1);
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+.tab[aria-current='page'] span:last-child {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0); /* the bubble speaks for itself; the name stays for screen readers */
+}
+
+.tab.has-news::after {
+  content: '';
+  position: absolute;
+  top: 0.7rem;
+  left: calc(50% + 0.7rem);
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--color-ink);
+}
+
+.tab[aria-current='page'].has-news::after {
+  top: -0.9rem;
+  left: calc(50% + 0.9rem);
+  border: 2px solid var(--color-paper);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .tabbar {
+    transition: --x 0.35s cubic-bezier(0.3, 1.3, 0.5, 1);
+  }
+
+  .tab[aria-current='page'] .tab-icon {
+    animation: bubble-in 0.35s cubic-bezier(0.3, 1.6, 0.5, 1);
+  }
+}
+
+@keyframes bubble-in {
+  from {
+    transform: translateY(0.9rem) scale(0.7);
+  }
+}
+
+/* -- sheets: slide up from the bottom -- */
+.sheet {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.sheet[hidden] {
+  display: none;
+}
+
+.sheet-scrim {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgb(0 0 0 / 0.4);
+}
+
+.sheet-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-height: 92%;
+  border-radius: var(--radius-card) var(--radius-card) 0 0;
+  background: var(--color-paper);
+  padding-bottom: var(--safe-bottom);
+}
+
+.sheet-panel::before {
+  content: '';
+  align-self: center;
+  width: 2.5rem;
+  height: 0.25rem;
+  margin-top: var(--space-2);
+  border-radius: 999px;
+  background: var(--color-line);
+}
+
+.sheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--gutter-right) 0 var(--gutter-left);
+}
+
+.sheet-title {
+  font-size: var(--text-large);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+}
+
+.sheet-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0 var(--gutter-right) var(--space-4) var(--gutter-left);
+}
+
+.sheet-links {
+  list-style: none;
+}
+
+.sheet-links a,
+.sheet-links button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 3.25rem;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid var(--color-line);
+  background: none;
+  font-size: var(--text-body);
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  color: var(--color-ink);
+}
+
+.sheet-clock {
+  margin-top: var(--space-3);
+  font-size: var(--text-micro);
+  letter-spacing: 0.06em;
+  color: var(--color-ink-soft);
+}
+
+/* the product sheet */
+.sheet-product .packshot {
+  aspect-ratio: 1;
+  margin-bottom: var(--space-3);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+}
+
+.sheet-product .packshot img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.sheet-product .price {
+  margin-bottom: var(--space-3);
+  font-size: var(--text-large);
+}
+
+.sheet-product .sizes,
+.sheet-product .dots-row {
+  margin-bottom: var(--space-3);
+}
+
+.sheet-product .button {
+  width: 100%;
+  min-height: 3.25rem;
+}
+
+/* buttons: pill, thumb sized */
+.button {
+  border-radius: 999px;
+  font-size: var(--text-small);
+  letter-spacing: 0.12em;
+}
+
+.button-primary {
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.button-primary:active {
+  background: var(--color-ink-soft);
+}
+
+.button-primary:disabled {
+  border-color: var(--color-line);
+  background: var(--color-surface);
+  color: var(--color-ink-soft);
+}
+
+.size-button {
+  min-width: var(--tap-target);
+  min-height: var(--tap-target);
+  border-radius: 0.5rem;
+}
+
+/* -- home: the booster of the day, then the shop -- */
+.home {
+  background: var(--color-paper);
+}
+
+.booster-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.55rem;
+  padding: var(--space-4) var(--space-3);
+  border-radius: var(--radius-card);
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.eyebrow {
+  font-size: var(--text-micro);
+  letter-spacing: 0.2em;
+  opacity: 0.7;
+}
+
+.booster-status {
+  font-size: 1.5rem;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+}
+
+.booster-card .button {
+  align-self: stretch;
+  min-height: 3.25rem;
+  border-color: var(--color-paper);
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+.booster-card.is-spent .button {
+  border-color: rgb(255 255 255 / 0.3);
+  background: transparent;
+  color: rgb(255 255 255 / 0.6);
+}
+
+.section-title {
+  margin-top: var(--space-4);
+  font-size: var(--text-large);
+  font-weight: 400;
+  letter-spacing: 0.16em;
+}
+
+.shop-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4) var(--space-3);
+  list-style: none;
+}
+
+.shop-tile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  color: var(--color-ink);
+}
+
+.shop-tile .packshot {
+  aspect-ratio: 1;
+  margin-bottom: var(--space-1);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+}
+
+.shop-tile .packshot img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.shop-tile .name {
+  font-size: var(--text-small);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+}
+
+.shop-tile .price {
+  font-size: var(--text-small);
+  font-style: italic;
+  color: var(--color-ink-soft);
+}
+
+/* -- collection: a tab per category, a grid of cards -- */
+.collection {
+  align-items: stretch;
+  gap: 0;
+  padding: 0;
+}
+
+.col-head {
+  flex: none;
+  padding: var(--space-3) 0 0;
+  background: var(--color-paper);
+}
+
+.col-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 0 var(--gutter-right) 0 var(--gutter-left);
+}
+
+.col-title h1 {
+  font-size: var(--text-large);
+  letter-spacing: 0.16em;
+}
+
+.col-count {
+  font-size: 1.75rem;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.col-count b {
+  font-weight: inherit;
+}
+
+.col-head .album-bar {
+  margin: var(--space-2) var(--gutter-right) var(--space-2) var(--gutter-left);
+}
+
+.chips {
+  display: flex;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--gutter-right) var(--space-2) var(--gutter-left);
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.chips::-webkit-scrollbar {
+  display: none;
+}
+
+.chip {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: var(--tap-target);
+  padding: 0 var(--space-3);
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  background: var(--color-paper);
+  font-size: var(--text-small);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  color: var(--color-ink);
+  scroll-snap-align: start;
+}
+
+.chip em {
+  font-style: normal;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-ink-soft);
+}
+
+.chip[aria-selected='true'] {
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.chip[aria-selected='true'] em {
+  color: rgb(255 255 255 / 0.7);
+}
+
+.chip-dot {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: currentcolor;
+}
+
+.collection .find {
+  margin-bottom: var(--space-2);
+}
+
+.reward-card {
+  padding: var(--space-3);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+}
+
+.reward-card:empty {
+  display: none;
+}
+
+.reward-card b {
+  display: block;
+  font-size: var(--text-small);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+}
+
+.reward-card span {
+  display: block;
+  margin-top: var(--space-1);
+  font-size: var(--text-small);
+  line-height: 1.5;
+  color: var(--color-ink-soft);
+}
+
+.reward-card.is-won {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.reward-card.is-won span {
+  color: rgb(255 255 255 / 0.8);
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  list-style: none;
+}
+
+.tile {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 5 / 7;
+  padding: var(--space-2);
+  overflow: hidden;
+  border: 1px solid var(--color-ink);
+  border-radius: 0.625rem;
+  background: var(--color-paper);
+}
+
+.tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.tile.is-photo img {
+  object-fit: cover;
+}
+
+.tile.is-missing {
+  border-color: var(--color-line);
+  background: var(--color-surface);
+}
+
+.tile.is-missing img {
+  filter: grayscale(1) contrast(0.6);
+  mix-blend-mode: multiply;
+  opacity: 0.22;
+}
+
+.tile-no {
+  position: absolute;
+  left: 0.4rem;
+  top: 0.3rem;
+  font-size: 0.625rem;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-ink-soft);
+}
+
+.tile-gems {
+  position: absolute;
+  right: 0.4rem;
+  bottom: 0.4rem;
+  display: flex;
+  gap: 2px;
+}
+
+.gem {
+  width: 0.4rem;
+  height: 0.4rem;
+  background: var(--color-ink);
+  transform: rotate(45deg);
+}
+
+.tile.is-missing .gem {
+  background: var(--color-line);
+}
+
+/* the card in big: swipe left and right through the category */
+.sheet-card .sheet-body {
+  padding: 0;
+}
+
+.pager {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.pager::-webkit-scrollbar {
+  display: none;
+}
+
+.slide {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-3) var(--gutter-right) var(--space-4) var(--gutter-left);
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+
+.slide-card {
+  position: relative;
+  width: min(72cqw, 17rem);
+  aspect-ratio: 5 / 7;
+}
+
+.slide-card .card {
+  touch-action: auto;
+  border-radius: var(--radius-card);
+  box-shadow: 0 1rem 2rem rgb(0 0 0 / 0.16);
+}
+
+.slide-card.is-missing .card {
+  border-color: var(--color-line);
+  background: var(--color-surface);
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.slide-card.is-missing img {
+  width: 70%;
+  filter: grayscale(1) contrast(0.6);
+  mix-blend-mode: multiply;
+  opacity: 0.25;
+}
+
+.slide-card.is-missing p {
+  font-size: var(--text-small);
+  letter-spacing: 0.14em;
+  color: var(--color-ink-soft);
+}
+
+.slide-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+}
+
+.slide-info .button {
+  width: 100%;
+  min-height: 3.25rem;
+}
+
+.slide-info .hint {
+  text-align: center;
+}
+
+.pager-count {
+  margin: var(--space-1) 0 0;
+  text-align: center;
+  font-size: var(--text-small);
+  letter-spacing: 0.14em;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-ink-soft);
+}
+
+/* -- bag: the checkout button sits above the tab bar -- */
+.bag-row {
+  grid-template-columns: 5.5rem 1fr;
+}
+
+.bag-row .packshot {
+  border-radius: 0.625rem;
+  background: var(--color-surface);
+}
+
+.screen-footer .button {
+  width: 100%;
+  min-height: 3.25rem;
+  margin-bottom: var(--space-2);
+}
+
+/* -- avatar: the stage takes the screen, the wardrobe is one strip -- */
+.tryon {
+  align-items: stretch;
+  gap: 0;
+  padding: 0;
+}
+
+/* a piece, shown on the body: the picture of the product, with its white taken away */
+
+@media (prefers-reduced-motion: no-preference) {
+  .sheet:not([hidden]) .sheet-panel {
+    animation: sheet-up 0.28s cubic-bezier(0.2, 0.9, 0.3, 1);
+  }
+
+  .sheet:not([hidden]) .sheet-scrim {
+    animation: scrim-in 0.28s ease-out;
+  }
+}
+
+@keyframes sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes scrim-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.toast {
+  z-index: 60;
+  bottom: calc(var(--tabbar-height) + var(--safe-bottom) + 4.5rem);
+}
+
+.phone.no-tabs .toast {
+  bottom: calc(var(--safe-bottom) + 5rem);
+}
+
+.name-input:focus-visible {
+  outline: none;
+  border-bottom-width: 3px;
+}
+
+.name-avatar {
+  height: 76%;
+}
+
+/* the boosters shown in the intro: whole packs, not squares */
+.learn-art img[src*='booster'] {
+  flex: 1 1 0;
+  min-width: 0;
+  height: auto;
+  max-height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0.5rem 0.75rem rgb(0 0 0 / 0.25));
+}
+
+/* -- the guide: a frame on a part of the screen, a bubble that says what it is -- */
+.coach {
+  position: absolute;
+  inset: 0;
+  z-index: 45;
+  overflow: hidden;
+}
+
+.coach[hidden] {
+  display: none;
+}
+
+.coach-hole {
+  position: absolute;
+  border: 2px solid var(--color-paper);
+  border-radius: 0.75rem;
+  box-shadow: 0 0 0 100vmax rgb(0 0 0 / 0.6);
+}
+
+.coach-bubble {
+  position: absolute;
+  left: var(--gutter-left);
+  right: var(--gutter-right);
+  padding: var(--space-3);
+  border-radius: var(--radius-card);
+  background: var(--color-paper);
+  font-size: var(--text-body);
+  line-height: 1.5;
+  letter-spacing: 0.06em;
+  color: var(--color-ink);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .coach-hole {
+    transition: left 0.3s ease, top 0.3s ease, width 0.3s ease, height 0.3s ease;
+  }
+}
+
+.fit-piece {
+  flex: none;
+  width: 6.5rem;
+  scroll-snap-align: start;
+  font-size: 0.625rem;
+}
+
+/* the pieces to try on: a strip that scrolls sideways */
+.fit-picker {
+  flex: none;
+  display: flex;
+  grid-template-columns: none;
+  gap: var(--space-2);
+  width: calc(100% + var(--gutter-left) + var(--gutter-right));
+  margin: 0 calc(var(--gutter-right) * -1) 0 calc(var(--gutter-left) * -1);
+  padding: var(--space-2) var(--gutter-right) var(--space-2) var(--gutter-left);
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+}
+
+.fit-picker::-webkit-scrollbar {
+  display: none;
+}
+
+/* dress-up: the pieces are worn together, each at its place on the body */
+.fit-tabs {
+  flex: none;
+  width: calc(100% + var(--gutter-left) + var(--gutter-right));
+  margin: 0 calc(var(--gutter-right) * -1) 0 calc(var(--gutter-left) * -1);
+  border-top: 1px solid var(--color-line);
+  border-bottom: 0;
+}
+
+/* sizes of the outfit */
+.size {
+  align-items: stretch;
+  gap: 0;
+  padding: 0;
+}
+
+.size h1.hand {
+  text-align: left;
+}
+
+.size-list {
+  list-style: none;
+  border-top: 1px solid var(--color-line);
+}
+
+.size-row {
+  display: grid;
+  grid-template-columns: 5rem 1fr;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.size-row .packshot {
+  aspect-ratio: 1;
+  border-radius: 0.625rem;
+  background: var(--color-surface);
+}
+
+.size-row .packshot img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.size-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
+}
+
+.size .total {
+  margin-top: var(--space-3);
+}
+
+.size .button {
+  margin-top: var(--space-3);
+}
+
+/* fitting room: the bar that shows what to buy in the outfit */
+.outfit-bar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--gutter-right) var(--space-2) var(--gutter-left);
+  border-top: 1px solid var(--color-line);
+  background: var(--color-surface);
+  font-size: var(--text-small);
+  letter-spacing: 0.08em;
+}
+
+.outfit-bar[hidden] {
+  display: none;
+}
+
+.outfit-bar .button {
+  flex: none;
+  padding: 0 var(--space-4);
+}
+
+.fit-piece b {
+  font-size: 0.625rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  color: var(--color-ink);
+}
+
+.fit-piece span {
+  color: var(--color-ink-soft);
+}
+
+.fit-stage {
+  background-position: center;
+  background-size: cover;
+}
+
+/* the fitting room has no side padding: the strips run edge to edge, the title keeps the gutter */
+.tryon .fit-tabs,
+.tryon .fit-picker {
+  width: 100%;
+  margin: 0;
+}
+
+.tryon .fit-picker {
+  padding-left: var(--gutter-left);
+  padding-right: var(--gutter-right);
+}
+
+.tryon .fit-title {
+  left: var(--gutter-left);
+}
+
+/* product pictures sit on pure white, like the packshots of the site */
+.shop-tile .packshot,
+.sheet-product .packshot,
+.bag-row .packshot,
+.size-row .packshot,
+.learn-art {
+  background: var(--color-paper);
+}
+
+.learn-art {
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+}
+
+/* the product sheet: a picture that does not eat the sheet, buttons that stay in reach */
+.sheet-product .packshot {
+  max-height: 40cqh;
+  margin-bottom: var(--space-2);
+}
+
+.sheet-product .packshot img {
+  max-height: 40cqh;
+}
+
+.sheet-product .name {
+  font-size: var(--text-body);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+}
+
+.sheet-product .price {
+  margin-bottom: var(--space-2);
+}
+
+.sheet-actions {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-2) 0 var(--space-3);
+  background: var(--color-paper);
+}
+
+/* a card you do not have yet: pure white too, only a pale ghost of the product */
+.tile.is-missing,
+.slide-card.is-missing .card {
+  background: var(--color-paper);
+}
+
+.tile.is-missing img,
+.slide-card.is-missing img {
+  opacity: 0.18;
+}
+
+/* a tap anywhere goes on (welcome, the intro pages) */
+.tap-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0 0 var(--space-5);
+  border: 0;
+  background: none;
+  font-size: var(--text-micro);
+  letter-spacing: 0.2em;
+  color: var(--color-ink-soft);
+}
+
+.name-ok {
+  align-self: flex-start;
+  min-width: 7rem;
+}
+
+.size-back {
+  align-self: flex-start;
+  min-height: var(--tap-target);
+  padding: 0;
+}
+
+.reveal-next {
+  width: calc(100% - var(--gutter-left) - var(--gutter-right));
+}
+
+/* the strip of pieces starts on the left, side by side */
+.fit-picker {
+  justify-content: flex-start;
+}
+
+.coach.is-passive,
+.coach.is-passive .coach-hole {
+  pointer-events: none;
+}
+
+/* the avatar and the pieces on it: one box with the proportions of the avatar picture, layers placed in % of it */
+.fit-stage {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-top: var(--space-2);
+}
+
+.fit-figure {
+  position: relative;
+  height: 100%;
+  max-width: 100%;
+}
+
+.fit-figure img {
+  position: absolute;
+  max-width: none;
+}
+
+.fit-figure > img:first-child {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.fit-figure .fit-layer {
+  pointer-events: none;
+  filter: drop-shadow(0 0.15rem 0.2rem rgb(0 0 0 / 0.25));
+}
+
+.tryon .fit-piece img {
+  height: 4.5rem;
+}
+
+/* the colour row and the size row of a product start at the same edge, with the same squares */
+.sheet-product .dots-row,
+.sheet-product .sizes {
+  margin-left: 0;
+  gap: var(--space-2);
+}
+
+.sheet-product .dot-button {
+  min-width: var(--tap-target);
+}
+
+.sheet-product .dot-button .thumb {
+  width: var(--tap-target);
+  height: var(--tap-target);
+  padding: 0.2rem;
+  border-radius: 0.5rem;
+}
+
+.sheet-product .dot-button .dot {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+/* -- missions: cards with a progress bar and a button that takes you there -- */
+.missions-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.missions-count {
+  font-size: 1.75rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.missions-count b {
+  font-weight: inherit;
+}
+
+.missions .hint {
+  text-align: left;
+}
+
+.mission-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  list-style: none;
+}
+
+.mission {
+  padding: var(--space-3);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  background: var(--color-paper);
+}
+
+.mission-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.mission b {
+  font-size: var(--text-body);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+}
+
+.mission em {
+  flex: none;
+  font-size: var(--text-small);
+  font-style: normal;
+  font-variant-numeric: tabular-nums;
+}
+
+.mission p {
+  margin-top: var(--space-1);
+  font-size: var(--text-small);
+  line-height: 1.5;
+  color: var(--color-ink-soft);
+}
+
+.mission .album-bar {
+  margin: var(--space-3) 0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.mission .button {
+  width: 100%;
+}
+
+.mission.is-done {
+  background: var(--color-surface);
+  border-color: transparent;
+}
+
+.mission.is-done b {
+  color: var(--color-ink-soft);
+}
+
+.mission.is-done em::before {
+  content: '\2713  ';
+}
+
+.mission .album-bar,
+.missions .album-bar {
+  height: 0.375rem;
+  background: var(--color-line);
+}
+
+.mission .album-bar i,
+.missions .album-bar i {
+  height: 100%;
+  margin-top: 0;
+  border-radius: 999px;
+}
+
+/* quantity of a line of the bag */
+.qty {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-small);
+  letter-spacing: 0.1em;
+}
+
+.qty span {
+  margin-right: var(--space-1);
+  color: var(--color-ink-soft);
+}
+
+.qty button {
+  width: var(--tap-target);
+  height: var(--tap-target);
+  border: 1px solid var(--color-line);
+  border-radius: 50%;
+  background: var(--color-paper);
+  font-size: 1.25rem;
+  line-height: 1;
+  color: var(--color-ink);
+}
+
+.qty b {
+  min-width: 1.5rem;
+  font-weight: 400;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* after the daily booster: the same ring, with the time of the next one */
+.packs-hint {
+  white-space: pre-line;
+}
+
+.packs-hint.is-timer {
+  font-size: var(--text-small);
+  line-height: 1.8;
+  color: var(--color-ink-soft);
+}
+
+.packs-hint.is-timer::first-line {
+  font-size: 1.5rem;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-ink);
+}
+
+/* 3D fitting room: the canvas fills the stage; the flat pictures only show if 3D is missing */
+.fit-stage {
+  position: absolute;
+  inset: 0;
+  touch-action: pan-y;
+  cursor: grab;
+}
+
+.avatar3d {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.fit-stage .fit-figure {
+  display: none;
+}
+
+.fit-stage.no-3d .fit-figure {
+  display: block;
+}
+
+.fit-stage.no-3d .avatar3d {
+  display: none;
+}
+
+/* fitting room: smaller buttons with more air between them (still 44px tall to tap) */
+.tryon .chips {
+  gap: var(--space-3);
+  padding: var(--space-3) var(--gutter-right) var(--space-3) var(--gutter-left);
+}
+
+.tryon .chip {
+  min-height: var(--tap-target);
+  padding: 0 var(--space-3);
+  font-size: var(--text-micro);
+  letter-spacing: 0.06em;
+  gap: 0.35rem;
+}
+
+.tryon .chip-dot {
+  width: 0.3rem;
+  height: 0.3rem;
+}
+
+.outfit-bar {
+  padding: var(--space-3) var(--gutter-right) var(--space-3) var(--gutter-left);
+  font-size: var(--text-micro);
+}
+
+.outfit-bar .button {
+  min-height: var(--tap-target);
+  padding: 0 var(--space-3);
+  font-size: var(--text-micro);
+  letter-spacing: 0.08em;
+}
+
+.tryon .fit-picker {
+  gap: var(--space-3);
+}
+
+/* the first button of a strip starts after the gutter, not on the screen edge (scroll snapping ignored the padding) */
+.chips,
+.fit-picker,
+.wardrobe-list {
+  scroll-padding-inline: var(--gutter-left) var(--gutter-right);
+}
+
+.tryon .chips > :first-child,
+.tryon .fit-picker > :first-child {
+  margin-left: 0;
+}
+
+/* -- tab bar, final: icons only, a round notch cradling the active bubble -- */
+.tabbar {
+  padding-top: 14px;
+  background: none;
+  overflow: visible;
+}
+
+.tabbar::before {
+  display: none;
+}
+
+.tabbar-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.tabbar-bg path {
+  fill: var(--color-paper);
+  stroke: var(--color-ink);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.tab {
+  min-height: calc(var(--tabbar-height) - 8px);
+  justify-content: center;
+}
+
+/* labels stay for screen readers, not on screen */
+.tab > span:last-child {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.tab[aria-current='page'] .tab-icon {
+  position: absolute;
+  top: -32px;
+  left: 50%;
+  width: 3.25rem;
+  height: 3.25rem;
+  margin: 0 0 0 -1.625rem;
+  box-shadow: 0 0.35rem 0.8rem rgb(0 0 0 / 0.22);
+}
+
+.tab[aria-current='page'].has-news::after {
+  top: -24px;
+  left: calc(50% + 14px);
+}
+
+.tab[aria-current='page'].has-news::after {
+  display: none;
+}
+
+/* -- tab bar as live frosted glass: the page scrolls under it, a round notch holds the bubble, no outline -- */
+.tabbar {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 16;
+  padding-top: 14px;
+  padding-bottom: var(--safe-bottom);
+}
+
+.tabbar-bg {
+  position: absolute;
+  inset: 0;
+  background: rgb(255 255 255 / 0.62);
+  -webkit-backdrop-filter: blur(22px) saturate(1.6);
+  backdrop-filter: blur(22px) saturate(1.6);
+  pointer-events: none;
+}
+
+.tab[aria-current='page'] .tab-icon {
+  box-shadow: 0 0 0 0.4rem rgb(255 255 255 / 0.55), 0 0.5rem 1rem rgb(0 0 0 / 0.2);
+}
+
+.phone:not(.no-tabs) .screen-body {
+  padding-bottom: calc(var(--tabbar-height) + var(--safe-bottom) + var(--space-4));
+}
+
+.phone:not(.no-tabs) .packs,
+.phone:not(.no-tabs) .tryon {
+  padding-bottom: calc(var(--tabbar-height) + var(--safe-bottom));
+}
+
+.phone:not(.no-tabs) .screen-footer {
+  margin-bottom: calc(var(--tabbar-height) + var(--safe-bottom));
+}
+
+/* the bar, bigger: a 60 px bubble, 28 px icons, a deeper notch */
+.tabbar {
+  padding-top: 18px;
+}
+
+.tab {
+  min-height: calc(var(--tabbar-height) - 18px);
+}
+
+.tab-icon {
+  width: 3rem;
+  height: 2rem;
+}
+
+.tab-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.tab[aria-current='page'] .tab-icon {
+  top: -38px;
+  width: 3.75rem;
+  height: 3.75rem;
+  margin-left: -1.875rem;
+}
+
+.tab[aria-current='page'] .tab-icon svg {
+  width: 30px;
+  height: 30px;
+}
+
+/* the bubble, a bit smaller */
+.tab[aria-current='page'] .tab-icon {
+  top: -32px;
+  width: 3.1rem;
+  height: 3.1rem;
+  margin-left: -1.55rem;
+}
+
+.tab[aria-current='page'] .tab-icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.tab-icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+/* drops: the ring is centred on the SCREEN (it spans the whole page), the title stays at the top,
+   the hint and the dots sit above the tab bar, clear of the bubble that rises from it */
+.packs .carousel {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.packs .packs-head,
+.packs .packs-hint,
+.packs .packs-dots {
+  position: relative;
+  z-index: 1;
+}
+
+.packs .packs-hint {
+  margin-top: auto;
+}
+
+.phone:not(.no-tabs) .packs {
+  padding-bottom: calc(var(--tabbar-height) + var(--safe-bottom) + 2.6rem);
+}
+
+/* the ring sits higher: a pack is centred on the screen, a little above the middle */
+.packs .ring {
+  top: 43%;
+}
+
+/* a pack follows the finger in 3D (like holding it): tilt, with a spring back when let go */
+.pack-card.is-focus .pack-face {
+  transform: perspective(700px) rotateX(var(--tx, 0deg)) rotateY(var(--ty, 0deg));
+  transform-style: preserve-3d;
+}
+
+.pack-card.is-focus.is-released .pack-face {
+  transition: transform 0.5s cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+
+/* the title of the drops: smaller, two lines */
+.packs .hand {
+  font-size: 1.35rem;
+  line-height: 1.1;
+  padding: 0 var(--space-3);
+}
+
+.packs .packs-head {
+  align-self: stretch;
+  width: 100%;
+}
+
+.packs .hand {
+  width: 100%;
+  text-align: center;
+  overflow-wrap: normal;
+}
+
+.packs .hand .w {
+  white-space: nowrap;
+}
+
+.packs h1.hand {
+  width: 100% !important;
+  max-width: none !important;
+  white-space: normal;
+}
+
+.packs .hand {
+  font-size: 2.35rem;
+  line-height: 1.05;
+  text-wrap: balance;
+}
+
+/* the selected bubble rises less */
+.tab[aria-current='page'] .tab-icon {
+  top: -20px;
+  width: 2.9rem;
+  height: 2.9rem;
+  margin-left: -1.45rem;
+}
+
+.tab[aria-current='page'] .tab-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.loading3d {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 45%;
+  text-align: center;
+  font-size: var(--text-small);
+  letter-spacing: 0.2em;
+  color: var(--color-ink-soft);
+}
+
+.loading3d[hidden] {
+  display: none;
+}
+
+/* the concept on the welcome screen: three lines, written by hand like the title */
+.concept {
+  margin-top: var(--space-4);
+  list-style: none;
+}
+
+.concept li {
+  font-family: var(--font-hand);
+  font-size: 2.1rem;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  color: var(--color-hand);
+}
+
+.welcome .hand {
+  font-size: 3.2rem;
+}
+
+.drag-hint {
+  flex: none;
+  text-align: center;
+  font-size: var(--text-micro);
+  letter-spacing: 0.14em;
+  color: var(--color-ink-soft);
+}
+
+/* the title sits exactly in the middle of the screen; the "tap to continue" line is pinned to the bottom */
+.welcome .tap-screen {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  background: none;
+  border: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: var(--space-4);
+}
+
+/* the welcome title sits a little above the middle */
+.welcome {
+  padding-bottom: 28%;
+}
+
+/* the avatar of the name screen stands a little higher: the feet are not cut by the corner of the frame */
+.name-avatar {
+  bottom: 7%;
+  height: 74%;
+}
+
+/* a finger drag on the avatar belongs to the avatar (turn, hood, zip): the browser does not scroll the page instead */
+.avatar3d,
+.fit-stage {
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* the home page on one screen: the banner, the goal and the 2 x 2 shop share the height, nothing to scroll */
+.home .screen-body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  padding-bottom: calc(var(--tabbar-height) + var(--space-2));
+}
+
+.home .booster-card {
+  flex: none;
+  gap: 0.3rem;
+  padding: var(--space-3);
+}
+
+.home .booster-status {
+  font-size: 1.2rem;
+}
+
+.home .booster-card .button {
+  min-height: 2.75rem;
+}
+
+.home .goal {
+  flex: none;
+  margin-top: var(--space-2);
+}
+
+.home .section-title {
+  flex: none;
+  margin-top: var(--space-3);
+  margin-bottom: var(--space-1);
+}
+
+.home .shop-grid {
+  flex: 1;
+  min-height: 0;
+  grid-template-rows: 1fr 1fr;
+  gap: var(--space-2) var(--space-3);
+}
+
+.home .shop-grid > li {
+  display: flex;
+  min-height: 0;
+}
+
+.home .shop-tile {
+  gap: 0.1rem;
+  min-height: 0;
+}
+
+.home .shop-tile .packshot {
+  flex: 1;
+  min-height: 0;
+  aspect-ratio: auto;
+  margin-bottom: 0;
+}
+
+.home .shop-tile .name,
+.home .shop-tile .price,
+.home .shop-tile .tag {
+  line-height: 1.25;
+}
+
+/* a very small phone keeps readable pictures and scrolls a little rather than shrinking them to nothing */
+.home .screen-body {
+  overflow-y: auto;
+}
+
+.home .shop-tile .packshot {
+  flex: 1 1 0;
+  min-height: 6.5rem;
+  overflow: hidden;
+}
+
+.home .shop-grid {
+  min-height: 0;
+  grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+/* the tips sit on the stage itself: the backdrop goes all the way down behind them */
+.fit-stage .drag-hint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: var(--space-2);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.fit-stage.has-backdrop .drag-hint {
+  color: #fff;
+  text-shadow: 0 0 0.5rem rgb(0 0 0 / 0.8), 0 0 0.2rem rgb(0 0 0 / 0.9);
+}
+
+/* the avatar stands above the tips: the canvas stops where the text begins */
+.fit-stage .avatar3d {
+  inset: 0 0 3.4rem 0;
+  height: auto;
+}
+
+.fit-stage .fit-figure {
+  padding-bottom: 3.4rem;
+}
+
+.fit-stage .avatar3d {
+  inset: 0 0 4.4rem 0;
+}
+
+.fit-stage .fit-figure {
+  padding-bottom: 4.4rem;
+}

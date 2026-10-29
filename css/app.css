@@ -1,0 +1,1855 @@
+/* app.css: the styles of the prototype. Look and feel of marierohana.com:
+   pure white, small light caps, thin rules. Colour only comes from the products. */
+
+/* -- the phone: header, stage, footer -- */
+.phone {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--text-body);
+  font-weight: 400;
+  letter-spacing: var(--tracking);
+  text-transform: uppercase;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--gutter-right) var(--space-3) var(--gutter-left);
+}
+
+.screen h1 {
+  font-size: var(--text-large);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-align: center;
+}
+
+.hint {
+  font-size: var(--text-small);
+  line-height: 1.6;
+  text-align: center;
+  color: var(--color-ink-soft);
+}
+
+/* -- header -- */
+.site-header {
+  position: relative;
+  z-index: 15;
+  flex: none;
+  padding-top: var(--safe-top);
+  background: var(--color-paper);
+}
+
+.logo-button {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+/* -- footer: the time in New York and Paris -- */
+
+/* -- buttons: the big grey ADD TO CART of the site -- */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--tap-target);
+  min-height: var(--tap-target);
+  padding: 0 var(--space-4);
+  border: 1px solid var(--color-ink);
+  border-radius: var(--radius-small);
+  background: var(--color-paper);
+  font-size: var(--text-small);
+  letter-spacing: 0.08em;
+}
+
+.button:active {
+  background: var(--color-surface);
+}
+
+.button-primary {
+  border-color: var(--color-button);
+  background: var(--color-button);
+}
+
+.button-primary:active {
+  background: var(--color-line);
+}
+
+.button-primary:disabled {
+  color: var(--color-ink-soft);
+  cursor: default;
+}
+
+.button-large {
+  width: 100%;
+  min-height: 3.5rem;
+}
+
+.text-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--tap-target);
+  min-height: var(--tap-target);
+  border: 0;
+  background: none;
+  font-size: var(--text-micro);
+  letter-spacing: 0.08em;
+  text-decoration: underline;
+  color: var(--color-ink-soft);
+}
+
+/* -- the curtain: the hoodie covers the whole phone, the site is behind it -- */
+.curtain {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+}
+
+.pack {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* The texts and buttons sit on the fabric at the bottom: the top is for the site that shows behind the V. */
+.hud {
+  position: absolute;
+  inset: 0;
+  z-index: 25;
+  pointer-events: none;
+  color: var(--on-fabric);
+}
+
+.hud .unzip-start,
+.hud .text-button,
+.hud .button {
+  pointer-events: auto;
+}
+
+.hud .button {
+  color: var(--color-ink);
+}
+
+.unzip-bottom {
+  position: absolute;
+  left: var(--gutter-left);
+  right: var(--gutter-right);
+  bottom: calc(var(--safe-bottom) + var(--space-3));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  text-align: center;
+}
+
+.unzip-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.hud .hint,
+.hud .text-button {
+  color: var(--on-fabric);
+}
+
+.hud h1 {
+  font-size: var(--text-small);
+  letter-spacing: 0.14em;
+  color: inherit;
+}
+
+.hud .status {
+  font-size: var(--text-large);
+  letter-spacing: 0.1em;
+}
+
+.fabric {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  will-change: transform;
+}
+
+.fabric img {
+  position: absolute;
+  top: 0;
+  max-width: none;
+  pointer-events: none;
+}
+
+.teeth {
+  position: absolute;
+  background-repeat: repeat-y;
+  pointer-events: none;
+}
+
+.zip-pull {
+  position: absolute;
+  padding: 0;
+  border: 0;
+  background: none;
+  touch-action: none;
+  filter: drop-shadow(0 3px 5px rgb(0 0 0 / 0.35));
+}
+
+.zip-pull img {
+  display: block;
+  max-width: none;
+  pointer-events: none;
+}
+
+/* Fully open: the two halves of the hoodie leave the screen. */
+.pack.is-open .fabric-left {
+  transform: translateX(-105%);
+}
+
+.pack.is-open .fabric-right {
+  transform: translateX(105%);
+}
+
+.pack.is-open .teeth,
+.pack.is-open .zip-pull {
+  visibility: hidden;
+}
+
+/* The camera film: hidden until the camera runs, then a small mirrored preview.
+   (Phones do not always decode a video that is invisible, so it is a real, visible picture.) */
+.camera-video {
+  position: absolute;
+  top: calc(var(--safe-top) + var(--space-3));
+  right: var(--gutter-right);
+  z-index: 26;
+  width: 4.5rem;
+  height: 6rem;
+  object-fit: cover;
+  transform: scaleX(-1);
+  border: 1px solid var(--color-paper);
+  background: var(--color-ink);
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.camera-video.is-live {
+  visibility: visible;
+}
+
+.hand-debug {
+  position: absolute;
+  left: var(--gutter-left);
+  right: var(--gutter-right);
+  bottom: var(--space-1);
+  font-size: var(--text-micro);
+  text-align: center;
+  color: var(--color-ink-soft);
+  z-index: 40;
+  pointer-events: none;
+}
+
+/* A discreet ring follows the tip of the index finger. */
+.hand-cursor {
+  position: absolute;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: -0.75rem 0 0 -0.75rem;
+  border: 1px solid var(--color-ink);
+  border-radius: var(--radius-round);
+  background: rgb(255 255 255 / 0.4);
+  pointer-events: none;
+  z-index: 27;
+}
+
+.hand-cursor.is-pinched {
+  background: var(--color-ink);
+}
+
+.flash {
+  position: absolute;
+  inset: 0;
+  background: var(--color-paper);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 28;
+}
+
+/* -- cards: a product page, as a collectible -- */
+
+.card {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: 0.625rem;
+  overflow: hidden;
+  border: 1px solid var(--color-ink);
+  background: var(--color-paper);
+  touch-action: none;
+  border-radius: var(--radius-card);
+  will-change: transform;
+}
+
+/* PASS: the card goes back into the hoodie, smaller and fainter. */
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.badge,
+.tag {
+  font-size: var(--text-micro);
+  letter-spacing: 0.1em;
+  color: var(--color-ink-soft);
+}
+
+.badge {
+  padding: 2px 6px;
+  border: 1px solid var(--color-line);
+}
+
+.badge-rare {
+  border-color: var(--color-ink);
+  color: var(--color-ink);
+}
+
+.badge-legendary {
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.packshot {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.packshot img,
+.packshot .silhouette {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.packshot .silhouette {
+  width: 70%;
+}
+
+.packshot.is-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.name {
+  font-size: var(--text-body);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+}
+
+.price {
+  font-size: var(--text-body);
+}
+
+.price em {
+  font-style: italic;
+}
+
+.soldout {
+  margin-left: var(--space-2);
+  font-size: var(--text-micro);
+  letter-spacing: 0.1em;
+  color: var(--color-ink-soft);
+}
+
+.dots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  padding: 3px 0;
+}
+
+.dot {
+  width: 0.75rem;
+  height: 0.75rem;
+  border: 1px solid rgb(0 0 0 / 0.2);
+  border-radius: var(--radius-round);
+  background: var(--dot);
+}
+
+.dot.is-current {
+  outline: 1px solid var(--color-ink);
+  outline-offset: 2px;
+}
+
+.meta {
+  font-size: var(--text-micro);
+  letter-spacing: 0.06em;
+  line-height: 1.5;
+  color: var(--color-ink-soft);
+}
+
+/* Ink splatter, in the black of the brand: discreet, in a corner. */
+.splatter {
+  position: absolute;
+  width: 20%;
+  fill: var(--color-ink);
+  stroke: var(--color-ink);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.splatter-a {
+  top: 1.75rem;
+  right: -0.25rem;
+}
+
+.splatter-b {
+  right: 18%;
+  bottom: 22%;
+  transform: scaleX(-1) rotate(20deg);
+}
+
+.splatter-c {
+  top: 38%;
+  left: -0.5rem;
+  transform: rotate(-35deg);
+}
+
+.splatter-legendary {
+  width: 24%;
+}
+
+/* Legendary cards only: a moving reflection, like shiny silicone. */
+.card.is-legendary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: linear-gradient(115deg, transparent 20%, rgb(255 255 255 / 0.7) 34%, rgb(200 200 200 / 0.3) 46%, rgb(255 255 255 / 0.5) 54%, transparent 70%);
+  background-size: 250% 250%;
+  background-position: 40% 0;
+}
+
+/* The two places a card can go light up as the phone leans. */
+
+.toast {
+  position: absolute;
+  bottom: calc(var(--safe-bottom) + 5rem);
+  left: 50%;
+  max-width: 86%;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-card);
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-size: var(--text-small);
+  letter-spacing: 0.06em;
+  text-align: center;
+  transform: translateX(-50%);
+  z-index: 30;
+  pointer-events: none;
+}
+
+.toast:empty {
+  display: none;
+}
+
+/* -- bag: like the cart page of the site -- */
+.bag {
+  align-items: stretch;
+  gap: 0;
+  padding: 0;
+}
+
+.screen-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--space-3) var(--gutter-right) var(--space-3) var(--gutter-left);
+}
+
+.screen-body > * + * {
+  margin-top: var(--space-3);
+}
+
+.bag h1 {
+  text-align: left;
+}
+
+.bag-list {
+  border-top: 1px solid var(--color-line);
+}
+
+.bag-row {
+  display: grid;
+  grid-template-columns: 6rem 1fr;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.bag-row .packshot {
+  flex: none;
+  aspect-ratio: 1;
+}
+
+.bag-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
+}
+
+.bag-info .tag {
+  font-size: var(--text-micro);
+  letter-spacing: 0.1em;
+  color: var(--color-ink-soft);
+}
+
+.bag-info .text-button {
+  padding: 0;
+  text-align: left;
+}
+
+.empty {
+  padding: var(--space-5) 0;
+  font-size: var(--text-small);
+  line-height: 1.6;
+  text-align: center;
+  color: var(--color-ink-soft);
+}
+
+.total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: var(--text-large);
+}
+
+.total em {
+  font-style: italic;
+}
+
+.next {
+  padding: var(--space-3) 0;
+  border-top: 1px solid var(--color-ink);
+  border-bottom: 1px solid var(--color-ink);
+  font-size: var(--text-micro);
+  letter-spacing: 0.1em;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.next b {
+  display: block;
+  font-size: var(--text-title);
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.screen-footer {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-2) var(--gutter-right) 0 var(--gutter-left);
+  border-top: 1px solid var(--color-line);
+  background: var(--color-paper);
+}
+
+/* -- motion: only for people who have not asked for less -- */
+@keyframes screen-enter {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+}
+
+@keyframes card-pop {
+  from {
+    opacity: 0;
+    transform: translateY(180px) scale(0.6);
+  }
+}
+
+@keyframes sheen {
+  from {
+    background-position: 110% 0;
+  }
+  to {
+    background-position: -110% 0;
+  }
+}
+
+@keyframes flash {
+  from {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .screen:not([hidden]) {
+    animation: screen-enter var(--motion-quick) ease-out;
+  }
+
+  .card.is-new {
+    animation: card-pop 0.65s cubic-bezier(0.25, 1.5, 0.5, 1) both;
+  }
+
+  .card.is-legendary::after {
+    animation: sheen 2.4s linear infinite;
+  }
+
+  .pack.is-open .fabric {
+    transition: transform 0.9s cubic-bezier(0.6, 0, 0.3, 1);
+  }
+
+  .flash.is-on {
+    animation: flash 0.9s ease-out;
+  }
+
+  .toast {
+    animation: screen-enter var(--motion-quick) ease-out;
+  }
+}
+
+/* -- home, bag, collection: pages that scroll, like the site -- */
+.home,
+.collection {
+  align-items: stretch;
+  gap: 0;
+  padding: 0;
+}
+
+.home h1,
+.collection h1 {
+  text-align: left;
+}
+
+.section {
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-ink);
+  font-size: var(--text-small);
+  font-weight: 400;
+  letter-spacing: 0.14em;
+}
+
+.dots-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: calc(var(--space-3) * -0.5);
+}
+
+.album-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: var(--text-large);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+}
+
+.album-title em {
+  font-style: normal;
+  font-variant-numeric: tabular-nums;
+}
+
+.album-bar {
+  height: 1px;
+  margin: var(--space-2) 0;
+  background: var(--color-line);
+}
+
+.album-bar i {
+  display: block;
+  height: 3px;
+  margin-top: -1px;
+  background: var(--color-ink);
+}
+
+.slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 1px dashed var(--color-line);
+  font-size: var(--text-small);
+  color: var(--color-line);
+}
+
+.slot.is-owned {
+  border: 1px solid var(--color-line);
+}
+
+.slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* A link below a grid breathes. */
+.home .shop-list + .text-button {
+  align-self: flex-start;
+}
+
+/* -- profile: the product chooses the player -- */
+
+.unzip-start {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+}
+
+.unzip-start .hint {
+  font-size: var(--text-micro);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.visually-hidden:focus-visible + * {
+  outline: 3px solid var(--color-ink);
+}
+
+.dot-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--tap-target);
+  min-height: var(--tap-target);
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.dot-button .dot {
+  width: 1rem;
+  height: 1rem;
+}
+
+.dot-button .thumb {
+  width: 2.25rem;
+  height: 2.25rem;
+  object-fit: contain;
+  border: 1px solid var(--color-line);
+}
+
+.dot-button .thumb.is-current {
+  border-color: var(--color-ink);
+}
+
+/* One drop per day: after it, the button only tells when the next one comes. */
+.is-spent {
+  color: var(--color-ink-soft);
+}
+
+/* -- packs: a ring of packs, like Pokemon TCG Pocket -- */
+.packs {
+  --lean: 0;
+  gap: var(--space-2);
+  padding-inline: 0; /* the ring uses the whole width of the screen */
+}
+
+.carousel {
+  --pack-width: min(40cqw, 24cqh);
+  position: relative;
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  perspective: 700px;
+  perspective-origin: 50% 40%;
+  touch-action: pan-y;
+  overflow: hidden; /* the rays of light stay in the carousel */
+}
+
+.ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+}
+
+.pack-card {
+  position: absolute;
+  left: calc(var(--pack-width) * -0.5);
+  top: calc(var(--pack-width) * -0.86);
+  width: var(--pack-width);
+  height: calc(var(--pack-width) * 1.72);
+  filter: drop-shadow(0 6px 10px rgb(0 0 0 / 0.18)) grayscale(0.6) brightness(0.92);
+}
+
+.pack-card.is-focus {
+  filter: drop-shadow(0 10px 16px rgb(0 0 0 / 0.28));
+}
+
+.pack-card {
+  backface-visibility: hidden;
+}
+
+.pack-face {
+  position: absolute;
+  inset: 0;
+  -webkit-box-reflect: below 8px linear-gradient(transparent 68%, rgb(255 255 255 / 0.28));
+}
+
+/* -- the pack: a knit booster, crimped top and bottom, sewn label, and a photographic zip -- */
+.pk-body,
+.pk-flap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+}
+
+.pk-flap {
+  top: 0;
+  height: 17%;
+  z-index: 4;
+  transform-origin: 50% 100%;
+}
+
+.pk-body {
+  top: 17%;
+  bottom: 0;
+  z-index: 3;
+}
+
+.pk-fab {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: calc(var(--pack-width) * 1.72);
+  background-repeat: repeat-y;
+  background-size: var(--pack-width) auto;
+  background-position: center top;
+}
+
+.pk-body .pk-fab {
+  top: calc(var(--pack-width) * 1.72 * -0.17);
+}
+
+.f-stripe {
+  background-image: url(../assets/pack/fab_stripe.jpg);
+}
+
+.f-grey {
+  background-image: url(../assets/pack/fab_grey.jpg);
+}
+
+.f-black {
+  background-image: url(../assets/pack/fab_black.jpg);
+}
+
+.f-latex {
+  background-image: url(../assets/pack/fab_latex.jpg);
+}
+
+.f-white {
+  background-image: url(../assets/pack/fab_white.jpg);
+}
+
+/* latex: a wet highlight, and a harder crimp */
+.is-latex .pk-shade {
+  background:
+    linear-gradient(100deg, transparent 22%, rgb(255 255 255 / 0.18) 40%, rgb(255 255 255 / 0.04) 52%, transparent 70%),
+    linear-gradient(90deg, rgb(0 0 0 / 0.24), rgb(0 0 0 / 0) 11%, rgb(0 0 0 / 0) 89%, rgb(0 0 0 / 0.24));
+}
+
+.is-latex .pk-crimp {
+  background: repeating-linear-gradient(90deg, rgb(255 255 255 / 0.12) 0 1px, transparent 1px 3px, rgb(0 0 0 / 0.4) 3px 4px, transparent 4px 6px);
+}
+
+.pk-shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 45% at 50% 40%, rgb(255 255 255 / 0.16), transparent 70%),
+    linear-gradient(90deg, rgb(0 0 0 / 0.24), rgb(0 0 0 / 0) 11%, rgb(0 0 0 / 0) 89%, rgb(0 0 0 / 0.24)),
+    linear-gradient(180deg, rgb(0 0 0 / 0.1), transparent 12%, transparent 88%, rgb(0 0 0 / 0.14));
+}
+
+.pk-crimp {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 7.6%;
+  pointer-events: none;
+  background: repeating-linear-gradient(90deg, rgb(0 0 0 / 0.18) 0 1.5px, rgb(255 255 255 / 0.14) 1.5px 2.5px, transparent 2.5px 6px);
+}
+
+.pk-flap .pk-crimp {
+  top: 0;
+  bottom: auto;
+  height: 42%;
+}
+
+/* the R of the brand, in relief on the pack: a dark edge below, a light edge above, and the body of the R */
+.pk-label {
+  position: absolute;
+  left: 50%;
+  bottom: 8%;
+  width: 42%;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.pk-r {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.pk-r-dark {
+  fill: rgb(0 0 0 / 0.6);
+}
+
+.pk-r-light {
+  fill: rgb(255 255 255 / 0.4);
+}
+
+/* the body of the R is the cloth of the pack itself: pressed in, not printed */
+.pk-r-top {
+  fill: rgb(128 128 128 / 0.12);
+}
+
+.is-light .pk-r-dark {
+  fill: rgb(0 0 0 / 0.4);
+}
+
+/* the zip: a canvas in two rows that part, and the slider */
+.pk-zip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 17%;
+  z-index: 6;
+  height: calc(var(--pack-width) * 0.1434);
+  margin-top: calc(var(--pack-width) * -0.0717);
+  touch-action: none;
+}
+
+.pk-zip canvas {
+  position: absolute;
+  left: 0;
+  top: -50%;
+  width: 100%;
+  height: 200%;
+  max-width: none;
+  filter: drop-shadow(0 2px 2px rgb(0 0 0 / 0.45));
+}
+
+.pk-puller {
+  position: absolute;
+  z-index: 8;
+  width: calc(var(--pack-width) * 0.358);
+  padding: 0;
+  border: 0;
+  background: none;
+  filter: drop-shadow(0 6px 5px rgb(0 0 0 / 0.45));
+  touch-action: none;
+}
+
+.pk-puller img {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+}
+
+.pk-puller:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 2px;
+}
+
+.pack-card.is-open .pk-puller {
+  opacity: 0;
+}
+
+.pack-card {
+  touch-action: none;
+}
+
+/* The strip on top is torn off in a burst of light, in the colour of the zip. */
+.rays {
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  width: 320cqw;
+  height: 320cqw;
+  margin: -160cqw 0 0 -160cqw;
+  -webkit-mask-image: radial-gradient(circle, #000 0%, transparent 38%);
+  mask-image: radial-gradient(circle, #000 0%, transparent 38%);
+  background: repeating-conic-gradient(from 0deg, rgb(255 255 255 / 0) 0deg, var(--ray, var(--color-paper)) 6deg, rgb(255 255 255 / 0) 12deg);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.carousel.is-bursting .rays {
+  opacity: 0.55;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ring {
+    transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .rays {
+    transition: opacity 0.4s ease;
+  }
+
+  .carousel.is-bursting .rays {
+    animation: spin-rays 3s linear infinite;
+  }
+
+  .pack-card.is-open .pk-flap {
+    animation: tear 1s cubic-bezier(0.3, 0.7, 0.2, 1) forwards;
+  }
+}
+
+@keyframes tear {
+  40% {
+    transform: translate(18%, -90%) rotate(-14deg);
+  }
+  100% {
+    transform: translate(70%, -260%) rotate(-28deg);
+    opacity: 0;
+  }
+}
+
+@keyframes spin-rays {
+  to {
+    transform: rotate(60deg);
+  }
+}
+
+/* -- sizes: like the size buttons of the shop -- */
+.sizes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: var(--space-1) 0;
+}
+
+.size-button {
+  min-width: var(--tap-target);
+  min-height: var(--tap-target);
+  padding: 0 var(--space-2);
+  border: 1px solid var(--color-line);
+  background: var(--color-paper);
+  font-size: var(--text-small);
+  letter-spacing: 0.06em;
+}
+
+.size-button[aria-pressed='true'] {
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+/* -- the drawer of the menu: RUNWAY BLOG EVENT STUDIO SHOP. COLLECTION and BAG stay in the bar. -- */
+
+/* the profile, small, above the hoodie */
+/* the banner on the top of the site */
+.drop-banner.is-spent .button {
+  color: var(--color-ink-soft);
+}
+
+/* -- reveal: the one card of the pack -- */
+.reveal {
+  justify-content: center;
+  gap: var(--space-3);
+}
+
+.reveal-holder {
+  position: relative;
+  width: 74cqw;
+  aspect-ratio: 5 / 7;
+}
+
+.reveal-holder .card {
+  touch-action: auto;
+}
+
+/* -- collection: like the shop page, grouped by product -- */
+
+/* a card you miss: a very light grey silhouette, and "???" */
+
+/* ==== design pass: a calmer, more modern look. Colour still comes from the products only. ==== */
+
+/* -- the hoodie of the day: a soft veil at the bottom so the texts read, and a slider that nudges -- */
+.hud::before {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 62%;
+  background: linear-gradient(to top, var(--scrim, rgb(0 0 0 / 0.6)) 0%, var(--scrim, rgb(0 0 0 / 0.6)) 35%, transparent 100%);
+  pointer-events: none;
+}
+
+.hud h1 {
+  font-size: var(--text-micro);
+  letter-spacing: 0.32em;
+  opacity: 0.85;
+}
+
+.hud .status {
+  font-size: 1.25rem;
+  font-weight: 300;
+  letter-spacing: 0.14em;
+}
+
+.hud .button-primary {
+  border-color: var(--on-fabric);
+  background: var(--on-fabric);
+  color: var(--on-fabric-inverse, var(--color-ink));
+  letter-spacing: 0.14em;
+}
+
+/* the title of the hoodie screen is only for screen readers: no box around the text after it */
+.unzip-heading .visually-hidden:focus-visible + * {
+  outline: none;
+}
+
+.hud .unzip-heading {
+  margin-bottom: var(--space-3);
+}
+
+.hud .unzip-start {
+  gap: var(--space-1);
+}
+
+.hud .unzip-start .hint {
+  max-width: 24rem;
+  font-size: var(--text-micro);
+  opacity: 0.8;
+}
+
+/* -- the ring of boosters: a spotlight, a floor, a bigger booster in front -- */
+.packs {
+  background: radial-gradient(ellipse 90% 55% at 50% 42%, var(--color-paper) 0%, var(--color-surface) 100%);
+  gap: 0;
+  padding-top: var(--space-4);
+}
+
+.packs-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  padding-inline: var(--gutter-left) var(--gutter-right);
+  padding-top: 0.35rem;
+}
+
+.packs h1 {
+  font-size: clamp(3.2rem, 8vw, 5.8rem);
+  line-height: 0.82;
+  letter-spacing: 0.07em;
+  text-align: center;
+  transform: translateY(0.2rem);
+}
+
+.carousel {
+  --pack-width: min(44cqw, 25cqh);
+}
+
+.floor {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + var(--pack-width) * 0.9);
+  width: calc(var(--pack-width) * 1.6);
+  height: calc(var(--pack-width) * 0.22);
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgb(0 0 0 / 0.28) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.pack-card {
+  filter: grayscale(0.85) brightness(0.96);
+}
+
+.pack-card.is-mine {
+  filter: grayscale(0.35);
+}
+
+.pack-card.is-focus {
+  filter: none;
+}
+
+.pack-face {
+  filter: drop-shadow(0 1rem 1.25rem rgb(0 0 0 / 0.25));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pack-card.is-open .pk-flap {
+    opacity: 0;
+  }
+}
+
+.pack-lock {
+  position: absolute;
+  top: 28%;
+  left: 50%;
+  padding: var(--space-1) var(--space-3);
+  transform: translateX(-50%);
+  border: 1px solid var(--color-paper);
+  border-radius: 2rem;
+  color: var(--color-paper);
+  font-size: var(--text-micro);
+  letter-spacing: 0.3em;
+  background: rgb(0 0 0 / 0.35);
+  pointer-events: none;
+}
+
+.packs-hint {
+  padding: var(--space-2) var(--gutter-right) var(--space-1) var(--gutter-left);
+  font-size: clamp(0.7rem, 1.7vw, 0.82rem);
+  letter-spacing: 0.12em;
+  line-height: 1.45;
+  text-align: center;
+  color: var(--color-ink-soft);
+  transform: translateY(-0.08rem);
+}
+
+/* the card of the pack: sealed inside, behind the body of the pack. It slides up out of the torn top. */
+.pack-inside {
+  z-index: 2;
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  top: 14%;
+  aspect-ratio: 5 / 7;
+}
+
+.pack-inside i {
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--color-ink);
+  border-radius: var(--radius-card);
+  background-color: var(--color-paper);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 120%;
+  box-shadow: 0 0.5rem 1.25rem rgb(0 0 0 / 0.3);
+}
+
+.pack-inside i.is-photo {
+  background-size: cover;
+}
+
+.pack-card.is-open .pack-inside {
+  z-index: 3;
+}
+
+/* -- the card you get: it turns around to face you, in a halo of the colour of the zip -- */
+.reveal {
+  background: radial-gradient(ellipse 80% 50% at 50% 38%, var(--color-paper) 0%, var(--color-surface) 100%);
+}
+
+.reveal h1 {
+  font-size: var(--text-small);
+  letter-spacing: 0.32em;
+}
+
+.reveal-holder {
+  --glow: var(--swatch-grey);
+}
+
+.reveal-holder::before {
+  content: '';
+  position: absolute;
+  inset: -12%;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--glow) 0%, transparent 62%);
+  opacity: 0.55;
+  filter: blur(1.5rem);
+}
+
+.reveal-holder .card {
+  box-shadow: 0 1.5rem 2.5rem rgb(0 0 0 / 0.22);
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-40%) scale(1.04);
+  }
+}
+
+@keyframes turn-around {
+  from {
+    transform: translateY(5rem) rotateY(100deg) scale(0.8);
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@keyframes nudge {
+  0%, 60%, 100% {
+    transform: translateY(0);
+  }
+  75% {
+    transform: translateY(0.75rem);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-0.5rem);
+  }
+}
+
+@keyframes halo {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pack.is-idle .zip-pull img {
+    animation: nudge 2.6s ease-in-out infinite;
+  }
+
+  .pack-card.is-focus .pack-face {
+    animation: float 4s ease-in-out infinite;
+  }
+
+  .pack-card.is-open .pack-face {
+    animation: none;
+  }
+
+  .pack-card.is-open .pack-inside i {
+    animation: rise 1s 0.2s cubic-bezier(0.2, 0.9, 0.25, 1) both;
+  }
+
+  .reveal-holder {
+    perspective: 900px;
+  }
+
+  .reveal-holder .card.is-new {
+    animation: turn-around 0.9s cubic-bezier(0.2, 0.9, 0.25, 1) both;
+  }
+
+  .reveal-holder::before {
+    animation: halo 1.1s ease-out both;
+  }
+
+  .reveal .hint,
+  .reveal-actions {
+    animation: fade-up 0.6s 0.7s ease-out both;
+  }
+}
+
+/* the back of a pack, seen from behind: plain grey knit */
+.pack-back {
+  pointer-events: none;
+  background-repeat: repeat-y;
+  background-size: var(--pack-width) auto;
+  background-position: center top;
+  box-shadow: inset 0 0 2rem rgb(0 0 0 / 0.3);
+  filter: brightness(0.88);
+}
+
+/* -- like marierohana.com: plain words, no boxes, thin lines. The rewards of the complete sets. -- */
+
+.rewards li.is-won em,
+.album-reward.is-won {
+  color: var(--color-ink);
+}
+
+.album-reward {
+  font-size: var(--text-small);
+  letter-spacing: 0.06em;
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+}
+
+.reveal-progress {
+  padding: 0 var(--gutter-left);
+  font-size: var(--text-small);
+  letter-spacing: 0.08em;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.reward-line {
+  padding: var(--space-2) 0;
+  border-top: 1px solid var(--color-line);
+  font-size: var(--text-small);
+  letter-spacing: 0.06em;
+  line-height: 1.6;
+}
+
+.collection .hint {
+  text-align: left;
+}
+
+.collection > .screen-body > .button-none {
+  align-self: flex-start;
+  width: auto;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: var(--text-small);
+  letter-spacing: 0.06em;
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+}
+
+/* a pack that is cut or burnt has no zip: only the line, drawn on the canvas */
+.is-cut .pk-puller img,
+.is-burn .pk-puller img {
+  visibility: hidden;
+}
+
+.is-cut .pk-zip canvas,
+.is-burn .pk-zip canvas {
+  filter: none;
+}
+
+/* -- a modern entry: a quiet tile with a title, one line of what it does, and where it goes -- */
+
+.tryon .hint {
+  text-align: left;
+}
+
+/* -- the avatar screen: the mannequin first, one row of controls, then the pieces by place -- */
+
+/* -- the intro after the zip: white screens, video-game style, written by hand -- */
+.intro {
+  background: var(--color-paper);
+  justify-content: flex-start;
+  text-align: center;
+}
+
+.screen .hand {
+  font-family: var(--font-hand);
+  font-size: 2.75rem;
+  line-height: 1.05;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  color: var(--color-hand);
+}
+
+.hand-small {
+  font-family: var(--font-hand);
+  font-size: 1.6rem;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  text-align: center;
+  color: var(--color-hand);
+}
+
+.hand .w,
+.hand-small .w {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hand .ch,
+  .hand-small .ch {
+    opacity: 0;
+    animation: write 0.01s linear forwards;
+    animation-delay: calc(0.25s + var(--i) * 65ms);
+  }
+}
+
+@keyframes write {
+  to {
+    opacity: 1;
+  }
+}
+
+.intro-caps {
+  font-size: var(--text-small);
+  letter-spacing: 0.16em;
+}
+
+.welcome {
+  justify-content: center;
+  padding: var(--space-5);
+}
+
+.spawn .hand {
+  margin-top: var(--space-4);
+}
+
+.avatar-pick {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.avatar-choice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  min-height: 0;
+  padding: var(--space-2);
+  border: 0;
+  border-bottom: 1px solid var(--color-line);
+  background: none;
+  font-size: var(--text-small);
+  letter-spacing: 0.16em;
+}
+
+.avatar-choice img {
+  flex: 1;
+  min-height: 0;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.avatar-choice:active {
+  background: var(--color-surface);
+}
+
+.name {
+  align-items: stretch;
+  text-align: left;
+}
+
+.name-form {
+  position: relative;
+  z-index: 1;
+  width: 62%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+}
+
+.name-form .hand {
+  text-align: left;
+}
+
+.name-input {
+  width: 100%;
+  min-height: var(--tap-target);
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid var(--color-ink);
+  border-radius: 0;
+  background: none;
+  font: inherit;
+  font-size: var(--text-large);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+
+.name-input::placeholder {
+  color: var(--color-ink-soft);
+  opacity: 0.6;
+}
+
+.name-avatar {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  height: 82%;
+  max-width: 60%;
+  object-fit: contain;
+  object-position: right bottom;
+}
+
+.fit {
+  gap: var(--space-2);
+}
+
+.fit .hand {
+  font-size: 2.1rem;
+}
+
+.sizes {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.fit-stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+}
+
+.fit-tag {
+  position: absolute;
+  left: 50%;
+  top: 36%;
+  transform: translateX(-50%);
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--color-ink);
+  background: var(--color-paper);
+  font-size: var(--text-micro);
+  letter-spacing: 0.16em;
+}
+
+.packs .hand {
+  font-size: clamp(2.3rem, 4.2vw, 3.2rem);
+  line-height: 0.9;
+  max-width: 15ch;
+  transform: translateY(0.14rem);
+}
+
+/* -- storyboard: intro pages -- */
+
+.welcome {
+  align-items: center;
+  text-align: center;
+}
+
+.welcome .hand {
+  font-size: 3.5rem;
+  text-align: center;
+}
+
+.spawn {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.spawn .hand {
+  margin-top: var(--space-2);
+  font-size: 3.8rem;
+  text-align: left;
+}
+
+.avatar-choice {
+  border-bottom: 2px solid transparent;
+  opacity: 0.55;
+}
+
+.avatar-choice[aria-pressed='true'] {
+  border-bottom-color: var(--color-ink);
+  opacity: 1;
+}
+
+/* learn: short pages that explain the game */
+.learn {
+  align-items: stretch;
+  gap: var(--space-3);
+  text-align: left;
+}
+
+.learn-art {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  height: 36%;
+  padding: var(--space-3);
+  background: var(--color-surface);
+}
+
+.learn-art:empty {
+  background: none;
+}
+
+.learn-art img {
+  flex: 1;
+  min-width: 0;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.learn .hand {
+  text-align: left;
+  font-size: 2.6rem;
+}
+
+.learn-text {
+  font-size: var(--text-body);
+  line-height: 1.7;
+  letter-spacing: 0.08em;
+}
+
+/* fit: the avatar big, the title top left, the size on the right, the pieces below */
+.fit {
+  gap: 0;
+  padding: 0 var(--gutter-right) var(--space-2) var(--gutter-left);
+}
+
+.fit-main {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+}
+
+.fit-stage {
+  position: absolute;
+  inset: 0;
+}
+
+.fit-title {
+  position: absolute;
+  left: 0;
+  top: var(--space-2);
+  width: 42%;
+  font-size: 2rem !important;
+  text-align: left !important;
+}
+
+.fit-picker {
+  flex: none;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2);
+  width: 100%;
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-line);
+}
+
+.fit-piece {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: var(--tap-target);
+  padding: var(--space-1);
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  font-size: 0.5rem;
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+  text-align: center;
+  color: var(--color-ink-soft);
+}
+
+.fit-piece img {
+  width: 100%;
+  height: 5.5rem;
+  object-fit: contain;
+}
+
+.fit-piece[aria-pressed='true'] {
+  border-bottom-color: var(--color-ink);
+  color: var(--color-ink);
+}
+
+/* reveal: the card, big, that you can move */
+.reveal {
+  gap: var(--space-2);
+}
+
+.reveal h1.hand {
+  font-size: 2rem;
+  letter-spacing: 0.01em;
+}
+
+.reveal-holder {
+  width: 84cqw;
+  max-height: 60%;
+  perspective: 900px;
+  touch-action: none;
+  cursor: grab;
+}
+
+.reveal-holder .card {
+  background-image: linear-gradient(115deg, transparent 30%, rgb(255 255 255 / 0.55) 46%, transparent 62%);
+  background-size: 300% 300%;
+  background-position: var(--sx, 50%) var(--sy, 50%);
+  background-blend-mode: soft-light;
+}
+
+/* reward: big hand text, then the categories */
+.reward {
+  align-items: stretch;
+  text-align: left;
+}
+
+.screen .hand.big {
+  margin-top: var(--space-3);
+  font-size: 3.6rem;
+  text-align: left;
+}
+
+.reward-list {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  max-height: 46%;
+  overflow-y: auto;
+}
+
+.reward-row.is-won .album-reward {
+  color: var(--color-ink);
+}
+
+/* missions */

@@ -1,0 +1,81 @@
+@font-face {
+  font-family: 'SFProDisplayCustom';
+  src: url('../assets/fonts/SFProDisplay-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: block;
+}
+
+/* tokens.css: the values the whole project is built from. Change the look here first. */
+
+@font-face {
+  font-family: 'RMHand';
+  src: url('../assets/fonts/ReenieBeanie.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: block; /* no fallback font shown first: it was bigger, the text shrank when the font arrived */
+}
+
+:root {
+  /* colour: the interface stays black, white and grey. Colour only comes from the products. */
+  --color-ink: #111111;
+  --color-ink-soft: #595959;
+  --color-paper: #ffffff;
+  --color-hand: #3b3b3b; /* the hand-written text */
+  --color-surface: #f2f2f2;
+  --color-line: #d4d4d4;
+  --color-button: #dcdcdc;
+  --color-backdrop: #e4e4e4;
+
+  /* product colours (dots, zip pulls, silhouettes) */
+  --swatch-black: #111111;
+  --swatch-grey: #b9b9b9;
+  --swatch-red: #e0201c;
+  --swatch-pink: #ff5fa8;
+  --swatch-green: #6fe84f;
+  --swatch-yellow: #f5e11d;
+  --swatch-orange: #ff8a1f;
+  --swatch-purple: #9a4dff;
+  --swatch-turquoise: #27d6c3;
+  --swatch-rainbow: conic-gradient(#e0201c, #ff8a1f, #f5e11d, #6fe84f, #27d6c3, #3a6bff, #9a4dff, #e0201c);
+
+  /* spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2rem;
+
+  /* type: the font of marierohana.com (SF Pro Display Light, the file is in assets/fonts), small, all caps */
+  --font: 'SFProDisplayCustom', -apple-system, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --text-micro: 0.6875rem;
+  --text-small: 0.75rem;
+  --text-body: 0.875rem;
+  --text-large: 1rem;
+  --text-title: 1.5rem;
+  --font-hand: 'RMHand', 'Bradley Hand', 'Segoe Script', cursive; /* the marker handwriting of the brand's posts, for the big words */
+  --tracking: 0.06em; /* the site: letter-spacing 0.06rem */
+
+  /* shape: square, like the packshots */
+  --radius-small: 999px; /* every button is a pill */
+  --radius-card: 0.875rem; /* the tiles, cards and sheets of the app */
+  --radius-round: 50%;
+  --tap-target: 2.75rem;
+  --bar-height: 3.25rem; /* the top bar */
+  --tabbar-height: 5rem; /* the tab bar at the bottom, in the thumb zone */
+
+  /* motion */
+  --motion-quick: 200ms;
+  --motion-card: 380ms;
+
+  /* the phone frame shown on a laptop */
+  --frame-width: 390px;
+  --frame-height: 844px;
+  --frame-radius: 2.5rem;
+
+  /* Space a real phone keeps for its notch and home bar. Zero on a laptop. */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --gutter-left: max(var(--space-3), env(safe-area-inset-left, 0px));
+  --gutter-right: max(var(--space-3), env(safe-area-inset-right, 0px));
+}
