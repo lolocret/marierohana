@@ -422,25 +422,50 @@
   color: var(--color-ink-soft);
 }
 
-.bf-vote {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.look-visual {
+  position: relative;
   width: 100%;
+}
+
+.bf-vote {
+  position: absolute;
+  right: var(--space-2);
+  bottom: var(--space-2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: var(--tap-target);
+  height: var(--tap-target);
   min-height: var(--tap-target);
-  margin-top: var(--space-1);
-  padding: 0 var(--space-3);
+  margin: 0;
+  padding: var(--space-1);
   border: 1px solid var(--color-ink);
-  border-radius: 999px;
+  border-radius: var(--radius-round);
   background: var(--color-paper);
-  font-size: var(--text-small);
-  letter-spacing: 0.12em;
+  font-size: var(--text-micro);
+  line-height: 1;
+  letter-spacing: 0;
   color: var(--color-ink);
 }
 
-.bf-vote:disabled {
+.bf-vote svg {
+  width: var(--space-3);
+  height: var(--space-3);
+  margin-bottom: var(--space-1);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linejoin: round;
+}
+
+.bf-vote[aria-pressed='true'] {
   background: var(--color-ink);
   color: var(--color-paper);
+}
+
+.bf-vote[aria-pressed='true'] svg {
+  fill: currentColor;
 }
 
 /* -- the winner -- */
@@ -638,10 +663,6 @@
   min-height: 3.6em;
 }
 
-.look .bf-vote {
-  margin-top: var(--space-2);
-}
-
 .lobby-head {
   padding-bottom: var(--space-2);
 }
@@ -772,19 +793,11 @@
   line-height: 1.55;
 }
 
-.look .bf-vote {
-  margin-top: var(--space-3);
-}
-
 .tile.is-received {
   box-shadow: 0 0 0 3px var(--color-paper), 0 0 0 6px var(--color-ink);
 }
 
-/* the vote button sits right under the caption; the hidden title shows no frame */
-.look .bf-vote {
-  margin-top: var(--space-1);
-}
-
+/* The hidden title shows no frame. */
 .look-cap {
   flex: 0 0 auto;
 }
@@ -841,10 +854,6 @@
   background: var(--color-paper);
   color: var(--color-ink);
   font-weight: 400;
-}
-
-.look .bf-vote {
-  margin-top: var(--space-2);
 }
 
 .look-frame {

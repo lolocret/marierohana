@@ -194,9 +194,11 @@
   function frameHtml(p, rank) {
     const isMe = p.id === 'me';
     const votes = App.state.get('votes');
-    return '<li class="look"><button class="look-frame' + (isMe ? ' is-me' : '') + '" type="button" data-action="open-sheet" data-sheet="player" data-id="' + p.id + '" aria-label="' + p.handle + ', ' + p.city + '">' +
+    return '<li class="look"><div class="look-visual"><button class="look-frame' + (isMe ? ' is-me' : '') + '" type="button" data-action="open-sheet" data-sheet="player" data-id="' + p.id + '" aria-label="' + p.handle + ', ' + p.city + '">' +
       '<span class="look-floor"></span><span class="look-u"><b>' + rank + '</b>' + p.handle + (isMe ? '<i class="me-dot"></i>' : '') + '</span>' + figureHtml(p.avatar, p.outfit, 'look-fig') + '</button>' +
-      '<button class="bf-vote" type="button" data-action="vote" data-id="' + p.id + '"' + (votes[p.id] ? ' disabled' : '') + '><span>' + (votes[p.id] ? 'VOTED' : 'VOTE') + '</span><span>' + p.shown + '</span></button></li>';
+      '<button class="bf-vote" type="button" data-action="vote" data-id="' + p.id + '" aria-pressed="' + !!votes[p.id] + '" aria-label="Like ' + p.handle + ', ' + p.shown + ' likes">' +
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/></svg>' +
+      '<span aria-hidden="true">' + p.shown + '</span></button></div></li>';
   }
 
   function drawLobby() {
@@ -489,10 +491,15 @@
     },
 
     'vote'(button) {
+      const focused = document.activeElement === button;
       const votes = Object.assign({}, App.state.get('votes'));
-      if (votes[button.dataset.id]) return;
-      votes[button.dataset.id] = true;
+      if (votes[button.dataset.id]) delete votes[button.dataset.id];
+      else votes[button.dataset.id] = true;
       App.state.set('votes', votes);
+      if (focused) {
+        const next = document.querySelector('.bf-vote[data-id="' + button.dataset.id + '"]');
+        if (next) next.focus({ preventScroll: true });
+      }
       App.feedback.play('keep');
     },
 
