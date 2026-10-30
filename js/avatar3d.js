@@ -54,6 +54,11 @@
     pivot = new THREE.Group();
     scene.add(pivot);
 
+    new ResizeObserver(function () {
+      resize();
+      App.avatar3d.draw();
+    }).observe(canvas);
+
     const element = stage();
     // A drag that goes DOWN over the chest pulls the zip down (the jacket opens); a drag UP zips it again.
     // A sideways drag turns the avatar.
@@ -72,7 +77,7 @@
         const dx = event.clientX - start.x;
         const dy = event.clientY - start.y;
         if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
-        const box = element.getBoundingClientRect();
+        const box = canvas.getBoundingClientRect();
         const rel = (start.y - box.top) / box.height;
         const vertical = Math.abs(dy) > Math.abs(dx) * 1.2 && App.state.get('outfit').jacket;
         mode = vertical && rel < 0.27 ? 'hood' : vertical && rel >= 0.27 && rel < 0.66 ? 'zip' : 'turn';
@@ -99,7 +104,7 @@
     // a tap on the head takes the cap off, or puts it back (the girl only)
     const end = function (event) {
       if (dragFrom !== null && mode === '' && start && event && event.type === 'pointerup' && current === 'f') {
-        const box = element.getBoundingClientRect();
+        const box = canvas.getBoundingClientRect();
         if ((start.y - box.top) / box.height < 0.27 && Math.abs(event.clientX - start.x) < 8 && Math.abs(event.clientY - start.y) < 8) {
           const o = App.state.get('outfit');
           App.state.set('outfit', Object.assign({}, o, { cap: o.cap === false }));
@@ -114,7 +119,7 @@
   }
 
   function resize() {
-    const element = stage();
+    const element = document.querySelector('[data-avatar3d]');
     const w = element.clientWidth;
     const h = element.clientHeight;
     if (!renderer || !w || !h) return;
