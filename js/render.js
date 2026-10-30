@@ -291,7 +291,11 @@
     // Tap a piece to put it on, again to take it off. Pieces you own are free; the others show their price.
     fit() {
       const hintEl = document.querySelector('[data-drag-hint]');
-      if (hintEl) hintEl.hidden = false;      // the two gestures are always explained
+      if (hintEl) {
+        const avatar = App.state.get('player').avatar || 'f';
+        hintEl.hidden = false;
+        hintEl.innerHTML = 'DRAG THE HEAD: HOOD' + (avatar === 'f' ? ' · TAP THE HEAD: CAP' : '') + '<br />DRAG THE CHEST: ZIP';
+      }
       const outfit = App.state.get('outfit');
       const tab = App.state.get('fitTab');
       document.querySelector('[data-fit-tabs]').innerHTML = FIT_TABS.map(function (t) {
