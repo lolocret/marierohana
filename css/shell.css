@@ -960,14 +960,16 @@
   border-radius: var(--radius-card);
 }
 
-/* the product sheet: a picture that does not eat the sheet, buttons that stay in reach */
+/* Keep the image compact and let sizes and actions scroll together without overlap. */
 .sheet-product .packshot {
-  max-height: 40cqh;
+  height: 30cqh;
+  max-height: none;
+  aspect-ratio: auto;
   margin-bottom: var(--space-2);
 }
 
 .sheet-product .packshot img {
-  max-height: 40cqh;
+  max-height: 100%;
 }
 
 .sheet-product .name {
@@ -981,8 +983,7 @@
 }
 
 .sheet-actions {
-  position: sticky;
-  bottom: 0;
+  position: static;
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
